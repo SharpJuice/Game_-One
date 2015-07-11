@@ -45,16 +45,17 @@ public Game(){
 	
 	// RUN METHOD
 public void run(){
-	long  lastTime = System.nanoTime();		// Current time in nano.seconds
-	double amountOfTicks = 60.0; 			// Frames per second
-	double ns = 1000000000 / amountOfTicks;
+	long  lastTime = System.nanoTime();		// Current time in nano.seconds ?? Found article that says it is buggy
+	double fps = 60.0; 						// Frames per second
+	double ns = 1000000000 / fps;			// Time passed between each frames @@ 166666.(6)
 	double delta = 0;
-	long timer = System.currentTimeMillis(); // Current time in mili.secenods
+	long timer = System.currentTimeMillis();// Current time in mili.secenods
 	int frames = 0;
+	long now;
 	
 		while(running){
-			long now = System.nanoTime(); 	// Current time in nano.seconds
-			delta += (now - lastTime) / ns;	// Difference between "now" and "LastTime"
+			now = System.nanoTime(); 		// Current time in nano.seconds
+			delta += (now - lastTime) / ns;	// If (now - lastTime) >= ns it will be more then 1 meaning while loop will execute 
 			lastTime = now;					// 
 			
 			while (delta>=1){
