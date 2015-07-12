@@ -23,15 +23,22 @@ public class Game extends Canvas implements Runnable{
 	private boolean running = false;
 	
 	private Handler handler;
+	private HUD hud;
 	
 	// GAME CONSTRUCTOR
 public Game(){
-	new Window(WIDTH, HEIGHT, "Game ONE", this); // new Window is created without a reference because we don't need it
 	
 	handler = new Handler();
-	Player player = new Player( 20, 20, ID.Player);
+	this.addKeyListener(new KeyInput(handler));
 	
-	handler.addObject(player);
+	
+	new Window(WIDTH, HEIGHT, "Game ONE", this); // new Window is created without a reference because we don't need it
+
+	hud = new HUD();
+
+	
+	handler.addObject(new Player( WIDTH/2, HEIGHT/2, ID.Player));
+	handler.addObject(new BasicEnemy( WIDTH/2 + 20, HEIGHT/2 + 20, ID.BasicEnemy));;
 }
 	
 	
@@ -75,6 +82,7 @@ public void run(){
 			while (delta>=1){
 				tick();
 				delta--;
+			
 			}
 			
 			
@@ -95,7 +103,7 @@ public void run(){
 private void tick(){
 	
 	handler.tick();
-	
+	hud.tick();
 }
 	
 // RENDER METHOD
@@ -109,16 +117,29 @@ private void render(){
 	Graphics g = bs.getDrawGraphics(); // Creates a graphics context for the drawing buffer
 
 	
-	// Order of rendering does matter !!
+	// Order of rendering does matter - last object is rendered last so it is on top of all -> in this example hud will be front layer as it should
 	g.setColor(Color.black);
 	g.fillRect(0, 0, WIDTH, HEIGHT);
 	
 	handler.render(g);
+	hud.render(g);
+	
 	
 	g.dispose();//Disposes of this graphics context and releases any system resources that it is using. A Graphics object cannot be used after dispose has been called. 
 	bs.show(); 	//Makes the next available buffer visible by either copying the memory (blitting) or changing the display pointer (flipping).
 				// without it we won'y see anything on the screen
 }
+
+
+	//  CLAMP METHOD
+	public static int clamp(int var, int min, int max){
+		if(var >= max)
+			return var = max;
+		else if( var <= min)
+			return var = min;
+		else
+			return var;
+	}
 	
 	public static void main(String args[]){
 		new Game(); // new Game is created without a reference because we don't need it

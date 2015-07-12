@@ -11,20 +11,27 @@ public class Player extends GameObject {
 
 	public Player(int x, int y, ID id) {
 		super(x, y, id);
-		// TODO Auto-generated constructor stub
-	}
+	
 
-	@Override
-	public void tick() {
-		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
+	public void tick() {
+		
+		x += velX;
+		y += velY;
+		
+		x = Game.clamp(x, 0, Game.WIDTH - 36);
+		y = Game.clamp(y, 0, Game.HEIGHT - 54);
+		
+	}
+
+	
 	public void render(Graphics g) {
 		
 		g.setColor(Color.blue);
-		g.fillRect(20, 20, 30, 30);
+		g.fillRect(x, y, 30, 30);
 		
 	}
 
